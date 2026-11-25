@@ -1,0 +1,376 @@
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Lista05 {
+
+    static Locale BR = Locale.of("pt", "BR");
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        sc.useLocale(BR);
+
+        System.out.print("Qual exercício executar (1 a 10)? ");
+        int opcao = sc.nextInt();
+        sc.nextLine();
+
+        switch (opcao) {
+            case 1: exercicio01(); break;
+            case 2: exercicio02(); break;
+            case 3: exercicio03(); break;
+            case 4: exercicio04(); break;
+            case 5: exercicio05(); break;
+            case 6: exercicio06(); break;
+            case 7: exercicio07(); break;
+            case 8: exercicio08(); break;
+            case 9: exercicio09(); break;
+            case 10: exercicio10(); break;
+            default: System.out.println("Exercício inválido.");
+        }
+    }
+
+    // ---------- Exercício 1 ----------
+    public static String gerarLinha(char simbolo, int tamanho) {
+        String linha = "";
+        for (int i = 0; i < tamanho; i++) {
+            linha += simbolo;
+        }
+        return linha;
+    }
+
+    public static void desenharTriangulo(int altura) {
+        for (int i = 1; i <= altura; i++) {
+            System.out.println(gerarLinha('*', i));
+        }
+    }
+
+    static void exercicio01() {
+        int[] alturas = new int[3];
+        for (int i = 0; i < alturas.length; i++) {
+            System.out.print("Altura do triângulo " + (i + 1) + ": ");
+            alturas[i] = sc.nextInt();
+        }
+
+        for (int i = 0; i < alturas.length; i++) {
+            desenharTriangulo(alturas[i]);
+            if (i < alturas.length - 1) {
+                System.out.println();
+            }
+        }
+    }
+
+    // ---------- Exercício 2 ----------
+    public static double calcularImc(double peso, double altura) {
+        return peso / (altura * altura);
+    }
+
+    public static String classificarImc(double imc) {
+        if (imc < 18.5) {
+            return "Abaixo do peso";
+        } else if (imc < 25) {
+            return "Peso normal";
+        } else if (imc < 30) {
+            return "Sobrepeso";
+        } else {
+            return "Obesidade";
+        }
+    }
+
+    public static void exibirRelatorio(double[] pesos, double[] alturas) {
+        for (int i = 0; i < pesos.length; i++) {
+            double imc = calcularImc(pesos[i], alturas[i]);
+            System.out.printf(BR, "Pessoa %d: IMC %.2f - %s%n", i + 1, imc, classificarImc(imc));
+        }
+    }
+
+    static void exercicio02() {
+        double[] pesos = new double[4];
+        double[] alturas = new double[4];
+
+        for (int i = 0; i < pesos.length; i++) {
+            System.out.print("Peso da pessoa " + (i + 1) + " (kg): ");
+            pesos[i] = sc.nextDouble();
+            System.out.print("Altura da pessoa " + (i + 1) + " (m): ");
+            alturas[i] = sc.nextDouble();
+        }
+
+        exibirRelatorio(pesos, alturas);
+    }
+
+    // ---------- Exercício 3 ----------
+    public static boolean ehPrimo(int numero) {
+        if (numero < 2) {
+            return false;
+        }
+        for (int i = 2; i < numero; i++) {
+            if (numero % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int contarPrimos(int[] v) {
+        int cont = 0;
+        for (int i = 0; i < v.length; i++) {
+            if (ehPrimo(v[i])) {
+                cont++;
+            }
+        }
+        return cont;
+    }
+
+    public static void exibirPrimos(int[] v) {
+        System.out.println("Primos do array:");
+        for (int i = 0; i < v.length; i++) {
+            if (ehPrimo(v[i])) {
+                System.out.println(v[i]);
+            }
+        }
+    }
+
+    static void exercicio03() {
+        int[] numeros = new int[8];
+        for (int i = 0; i < numeros.length; i++) {
+            System.out.print("Número " + (i + 1) + ": ");
+            numeros[i] = sc.nextInt();
+        }
+
+        exibirPrimos(numeros);
+        System.out.println("Quantidade de primos: " + contarPrimos(numeros));
+    }
+
+    // ---------- Exercício 4 ----------
+    public static void ordenar(int[] v) {
+        for (int i = 0; i < v.length - 1; i++) {
+            for (int j = 0; j < v.length - 1 - i; j++) {
+                if (v[j] > v[j + 1]) {
+                    int aux = v[j];
+                    v[j] = v[j + 1];
+                    v[j + 1] = aux;
+                }
+            }
+        }
+    }
+
+    public static boolean estaOrdenado(int[] v) {
+        for (int i = 0; i < v.length - 1; i++) {
+            if (v[i] > v[i + 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void exibir(int[] v) {
+        for (int i = 0; i < v.length; i++) {
+            System.out.print(v[i] + " ");
+        }
+        System.out.println();
+    }
+
+    static void exercicio04() {
+        int[] numeros = new int[6];
+        for (int i = 0; i < numeros.length; i++) {
+            System.out.print("Número " + (i + 1) + ": ");
+            numeros[i] = sc.nextInt();
+        }
+
+        System.out.println("Antes de ordenar:");
+        exibir(numeros);
+        System.out.println("Ordenado? " + estaOrdenado(numeros));
+
+        ordenar(numeros);
+
+        System.out.println("Depois de ordenar:");
+        exibir(numeros);
+        System.out.println("Ordenado? " + estaOrdenado(numeros));
+    }
+
+    // ---------- Exercício 5 ----------
+    public static String paraBinario(int n) {
+        if (n == 0) {
+            return "0";
+        }
+        String binario = "";
+        while (n > 0) {
+            int resto = n % 2;
+            binario = resto + binario;
+            n = n / 2;
+        }
+        return binario;
+    }
+
+    public static void exibirTabela(int[] v) {
+        for (int i = 0; i < v.length; i++) {
+            System.out.println(v[i] + " = " + paraBinario(v[i]));
+        }
+    }
+
+    static void exercicio05() {
+        int[] numeros = new int[5];
+        for (int i = 0; i < numeros.length; i++) {
+            System.out.print("Número " + (i + 1) + " (não negativo): ");
+            numeros[i] = sc.nextInt();
+        }
+
+        exibirTabela(numeros);
+    }
+
+    // ---------- Exercício 6 ----------
+    public static int contarVogais(String texto) {
+        String minusculo = texto.toLowerCase();
+        int cont = 0;
+        for (int i = 0; i < minusculo.length(); i++) {
+            char c = minusculo.charAt(i);
+            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+                cont++;
+            }
+        }
+        return cont;
+    }
+
+    public static void exibirContagem(String[] frases) {
+        int maior = -1;
+        String fraseMaior = "";
+
+        for (int i = 0; i < frases.length; i++) {
+            int vogais = contarVogais(frases[i]);
+            System.out.println("\"" + frases[i] + "\" tem " + vogais + " vogais");
+            if (vogais > maior) {
+                maior = vogais;
+                fraseMaior = frases[i];
+            }
+        }
+
+        System.out.println("Frase com mais vogais: \"" + fraseMaior + "\" (" + maior + ")");
+    }
+
+    static void exercicio06() {
+        String[] frases = new String[3];
+        for (int i = 0; i < frases.length; i++) {
+            System.out.print("Frase " + (i + 1) + ": ");
+            frases[i] = sc.nextLine();
+        }
+
+        exibirContagem(frases);
+    }
+
+    // ---------- Exercício 7 ----------
+    public static String gerarIniciais(String nomeCompleto) {
+        String[] partes = nomeCompleto.trim().split(" ");
+        String iniciais = "";
+        for (int i = 0; i < partes.length; i++) {
+            if (partes[i].length() > 0) {
+                iniciais += partes[i].substring(0, 1).toUpperCase() + ".";
+            }
+        }
+        return iniciais;
+    }
+
+    public static void exibirChamada(String[] nomes) {
+        for (int i = 0; i < nomes.length; i++) {
+            System.out.println((i + 1) + ". " + nomes[i] + " (" + gerarIniciais(nomes[i]) + ")");
+        }
+    }
+
+    static void exercicio07() {
+        String[] nomes = new String[4];
+        for (int i = 0; i < nomes.length; i++) {
+            System.out.print("Nome completo do aluno " + (i + 1) + ": ");
+            nomes[i] = sc.nextLine();
+        }
+
+        exibirChamada(nomes);
+    }
+
+    // ---------- Exercício 8 ----------
+    public static String maiorPalavra(String[] palavras) {
+        String maior = palavras[0];
+        for (int i = 1; i < palavras.length; i++) {
+            if (palavras[i].length() > maior.length()) {
+                maior = palavras[i];
+            }
+        }
+        return maior;
+    }
+
+    public static void exibirPalavras(String[] palavras) {
+        for (int i = 0; i < palavras.length; i++) {
+            System.out.println((i + 1) + ". " + palavras[i]);
+        }
+    }
+
+    static void exercicio08() {
+        System.out.print("Digite uma frase: ");
+        String frase = sc.nextLine().trim();
+        String[] palavras = frase.split(" ");
+
+        exibirPalavras(palavras);
+        System.out.println("Total de palavras: " + palavras.length);
+        System.out.println("Maior palavra: " + maiorPalavra(palavras));
+    }
+
+    // ---------- Exercício 9 ----------
+    public static long potencia(int base, int expoente) {
+        if (expoente == 0) {
+            return 1;
+        }
+        return base * potencia(base, expoente - 1);
+    }
+
+    public static void exibirPotencias(int[] bases, int expoente) {
+        for (int i = 0; i < bases.length; i++) {
+            System.out.println(bases[i] + "^" + expoente + " = " + potencia(bases[i], expoente));
+        }
+    }
+
+    static void exercicio09() {
+        System.out.print("Expoente: ");
+        int expoente = sc.nextInt();
+
+        int[] bases = new int[5];
+        for (int i = 0; i < bases.length; i++) {
+            System.out.print("Base " + (i + 1) + ": ");
+            bases[i] = sc.nextInt();
+        }
+
+        exibirPotencias(bases, expoente);
+    }
+
+    // ---------- Exercício 10 ----------
+    public static int fibonacci(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return 1;
+        }
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+
+    public static int somar(int[] v) {
+        int soma = 0;
+        for (int i = 0; i < v.length; i++) {
+            soma += v[i];
+        }
+        return soma;
+    }
+
+    static void exercicio10() {
+        System.out.print("N (1 a 30): ");
+        int n = sc.nextInt();
+
+        if (n < 1 || n > 30) {
+            System.out.println("Quantidade inválida.");
+            return;
+        }
+
+        int[] sequencia = new int[n];
+        for (int i = 0; i < n; i++) {
+            sequencia[i] = fibonacci(i);
+        }
+
+        exibir(sequencia);
+        System.out.println("Soma: " + somar(sequencia));
+    }
+}
